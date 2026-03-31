@@ -1,0 +1,17 @@
+{
+  "appId": "com.lilpillstudios.phillyhub",
+  "appName": "PhillyHub",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "Geolocation": {
+      "permissions": ["location"]
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#0F1117"
+    }
+  }
+}

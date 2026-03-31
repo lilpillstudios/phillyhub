@@ -1,0 +1,36 @@
+{
+  "name": "phillyhub",
+  "version": "1.0.0",
+  "description": "PhillyHub — Your guide to Philadelphia's biggest year. Lil Pill Studios.",
+  "author": "Lil Pill Studios",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:pwa": "vite --config vite.config.pwa.js",
+    "build": "vite build",
+    "build:pwa": "vite build --config vite.config.pwa.js",
+    "preview": "vite preview",
+    "cap:sync": "npx cap sync android && node fix-java17.js",
+    "cap:open": "npx cap open android",
+    "cap:build": "npx cap sync android && node fix-java17.js && cd android && .\\gradlew assembleRelease"
+  },
+  "dependencies": {
+    "@capacitor/app": "^5.0.7",
+    "@capacitor/core": "^5.7.0",
+    "@capacitor/geolocation": "^5.0.7",
+    "@capacitor/haptics": "^5.0.7",
+    "@capacitor/ios": "^5.7.0",
+    "@capacitor/status-bar": "^5.0.7",
+    "cordova-plugin-purchase": "^13.11.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^5.7.0",
+    "@capacitor/cli": "^5.7.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.4.0"
+  }
+}
