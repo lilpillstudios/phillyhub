@@ -21,15 +21,17 @@ workflows:
         script: npx cap add ios || true && npx cap sync ios
       - name: Set up app icon
         script: |
-          if [ -f "phillyhubappicon.png" ]; then
+          if [ -f "phillyhubicon.png" ]; then
             mkdir -p ios/App/App/Assets.xcassets/AppIcon.appiconset
-            cp phillyhubappicon.png ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
+            cp phillyhubicon.png ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
             echo '{"images":[{"filename":"AppIcon-1024.png","idiom":"universal","platform":"ios","size":"1024x1024"}],"info":{"author":"xcode","version":1}}' > ios/App/App/Assets.xcassets/AppIcon.appiconset/Contents.json
           fi
       - name: Install CocoaPods
         script: cd ios/App && pod install
       - name: Set deployment target
         script: cd ios/App && sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*/IPHONEOS_DEPLOYMENT_TARGET = 15.0/g' App.xcodeproj/project.pbxproj
+      - name: Increment build number
+        script: cd ios/App && agvtool new-version -all 2
       - name: Build iOS
         script: |
           cd ios/App
