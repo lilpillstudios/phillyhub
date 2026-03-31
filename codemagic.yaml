@@ -3,80 +3,46 @@ workflows:
     name: PhillyHub iOS Release
     max_build_duration: 30
     instance_type: mac_mini_m1
-    
     integrations:
       app_store_connect: Lil Pill Studios
-    
     environment:
       node: 18
       xcode: latest
       cocoapods: default
-     ios_signing:
+      ios_signing:
         distribution_type: app_store
         bundle_identifier: com.lilpillstudios.phillyhub
-        provisioning_profiles: automatic
-
     scripts:
       - name: Install dependencies
-        script: |
-          npm install
-          npm install @capacitor/ios@5.7.0 --legacy-peer-deps
-
+        script: npm install && npm install @capacitor/ios@5.7.0 --legacy-peer-deps
       - name: Build web assets
-        script: |
-          npm run build
-
+        script: npm run build
       - name: Add iOS platform
-        script: |
-          npx cap add ios || true
-          npx cap sync ios
-
+        script: npx cap add ios || true && npx cap sync ios
       - name: Set up app icon
         script: |
           if [ -f "philly_hub_app_icon.png" ]; then
             mkdir -p ios/App/App/Assets.xcassets/AppIcon.appiconset
             cp philly_hub_app_icon.png ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
-            cat > ios/App/App/Assets.xcassets/AppIcon.appiconset/Contents.json << 'ICONEOF'
-          {
-            "images": [{"filename":"AppIcon-1024.png","idiom":"universal","platform":"ios","size":"1024x1024"}],
-            "info": {"author":"xcode","version":1}
-          }
-          ICONEOF
+            echo '{"images":[{"filename":"AppIcon-1024.png","idiom":"universal","platform":"ios","size":"1024x1024"}],"info":{"author":"xcode","version":1}}' > ios/App/App/Assets.xcassets/AppIcon.appiconset/Contents.json
           fi
-
-      - name: Update iOS settings
-        script: |
-          cd ios/App
-          sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*/IPHONEOS_DEPLOYMENT_TARGET = 15.0/g' App.xcodeproj/project.pbxproj
-
       - name: Install CocoaPods
-        script: |
-          cd ios/App
-          pod install
-
+        script: cd ios/App && pod install
+      - name: Set deployment target
+        script: cd ios/App && sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*/IPHONEOS_DEPLOYMENT_TARGET = 15.0/g' App.xcodeproj/project.pbxproj
       - name: Build iOS
         script: |
           cd ios/App
-          xcodebuild -workspace App.xcworkspace \
-            -scheme App \
-            -configuration Release \
-            -archivePath build/App.xcarchive \
-            archive \
-            CODE_SIGN_IDENTITY="iPhone Distribution" \
-            DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM"
-
+          xcode-project use-profiles
+          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -archivePath build/App.xcarchive archive
       - name: Export IPA
         script: |
-          xcode-project use-profiles
           cd ios/App
-          xcodebuild -exportArchive \
-            -archivePath build/App.xcarchive \
-            -exportPath build/ipa \
-            -exportOptionsPlist ~/export_options.plist
-
+          xcode-project build-ipa --workspace App.xcworkspace --scheme App --archive-xcargs "-archivePath build/App.xcarchive"
     artifacts:
       - ios/App/build/ipa/*.ipa
-
+      - ios/App/*.ipa
+      - ./*.ipa
     publishing:
       app_store_connect:
         auth: integration
