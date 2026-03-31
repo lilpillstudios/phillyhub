@@ -21,10 +21,18 @@ workflows:
         script: npx cap add ios || true && npx cap sync ios
       - name: Set up app icon
         script: |
+          echo "Looking for icon..."
+          ls -la *.png || true
+          find . -name "phillyhubicon*" || true
           if [ -f "phillyhubicon.png" ]; then
+            echo "Found icon, copying..."
             mkdir -p ios/App/App/Assets.xcassets/AppIcon.appiconset
             cp phillyhubicon.png ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
             echo '{"images":[{"filename":"AppIcon-1024.png","idiom":"universal","platform":"ios","size":"1024x1024"}],"info":{"author":"xcode","version":1}}' > ios/App/App/Assets.xcassets/AppIcon.appiconset/Contents.json
+            echo "Icon set up successfully"
+          else
+            echo "ERROR: Icon not found!"
+            ls -la
           fi
       - name: Add privacy descriptions
         script: |
@@ -36,7 +44,7 @@ workflows:
       - name: Set deployment target
         script: cd ios/App && sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*/IPHONEOS_DEPLOYMENT_TARGET = 15.0/g' App.xcodeproj/project.pbxproj
       - name: Increment build number
-        script: cd ios/App && agvtool new-version -all 3
+        script: cd ios/App && agvtool new-version -all 4
       - name: Build iOS
         script: |
           cd ios/App
