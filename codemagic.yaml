@@ -4,15 +4,13 @@ workflows:
     max_build_duration: 30
     instance_type: mac_mini_m1
     
+    integrations:
+      app_store_connect: Lil Pill Studios
+    
     environment:
       node: 18
       xcode: latest
       cocoapods: default
-      groups:
-        - app_store_credentials
-      vars:
-        BUNDLE_ID: "com.lilpillstudios.phillyhub"
-        APP_STORE_APP_ID: "REPLACE_WITH_APP_STORE_ID"
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.lilpillstudios.phillyhub
@@ -34,37 +32,21 @@ workflows:
 
       - name: Set up app icon
         script: |
-          # Copy the 1024x1024 icon if it exists in repo root
           if [ -f "philly_hub_app_icon.png" ]; then
             mkdir -p ios/App/App/Assets.xcassets/AppIcon.appiconset
             cp philly_hub_app_icon.png ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
-            # Create Contents.json for single-size icon (Xcode 14+)
-            cat > ios/App/App/Assets.xcassets/AppIcon.appiconset/Contents.json << 'EOF'
+            cat > ios/App/App/Assets.xcassets/AppIcon.appiconset/Contents.json << 'ICONEOF'
           {
-            "images": [
-              {
-                "filename": "AppIcon-1024.png",
-                "idiom": "universal",
-                "platform": "ios",
-                "size": "1024x1024"
-              }
-            ],
-            "info": {
-              "author": "xcode",
-              "version": 1
-            }
+            "images": [{"filename":"AppIcon-1024.png","idiom":"universal","platform":"ios","size":"1024x1024"}],
+            "info": {"author":"xcode","version":1}
           }
-          EOF
+          ICONEOF
           fi
 
-      - name: Update iOS project settings
+      - name: Update iOS settings
         script: |
           cd ios/App
-          # Set deployment target
           sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*/IPHONEOS_DEPLOYMENT_TARGET = 15.0/g' App.xcodeproj/project.pbxproj
-          # Set display name
-          /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName PhillyHub" App/Info.plist || true
-          /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string PhillyHub" App/Info.plist || true
 
       - name: Install CocoaPods
         script: |
@@ -79,30 +61,17 @@ workflows:
             -configuration Release \
             -archivePath build/App.xcarchive \
             archive \
-            CODE_SIGN_IDENTITY="$CODE_SIGN_IDENTITY" \
-            PROVISIONING_PROFILE_SPECIFIER="$PROVISIONING_PROFILE_SPECIFIER" \
+            CODE_SIGN_IDENTITY="iPhone Distribution" \
             DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM"
 
       - name: Export IPA
         script: |
+          xcode-project use-profiles
           cd ios/App
           xcodebuild -exportArchive \
             -archivePath build/App.xcarchive \
             -exportPath build/ipa \
-            -exportOptionsPlist /dev/stdin << 'EOF'
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-            <key>method</key>
-            <string>app-store</string>
-            <key>uploadBitcode</key>
-            <false/>
-            <key>uploadSymbols</key>
-            <true/>
-          </dict>
-          </plist>
-          EOF
+            -exportOptionsPlist ~/export_options.plist
 
     artifacts:
       - ios/App/build/ipa/*.ipa
