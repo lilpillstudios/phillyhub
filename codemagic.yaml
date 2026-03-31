@@ -21,9 +21,9 @@ workflows:
         script: npx cap add ios || true && npx cap sync ios
       - name: Set up app icon
         script: |
-          if [ -f "philly_hub_app_icon.png" ]; then
+          if [ -f "phillyhubappicon.png" ]; then
             mkdir -p ios/App/App/Assets.xcassets/AppIcon.appiconset
-            cp philly_hub_app_icon.png ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
+            cp phillyhubappicon.png ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
             echo '{"images":[{"filename":"AppIcon-1024.png","idiom":"universal","platform":"ios","size":"1024x1024"}],"info":{"author":"xcode","version":1}}' > ios/App/App/Assets.xcassets/AppIcon.appiconset/Contents.json
           fi
       - name: Install CocoaPods
