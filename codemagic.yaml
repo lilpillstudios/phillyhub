@@ -34,15 +34,15 @@ workflows:
         script: |
           cd ios/App
           xcode-project use-profiles
-          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -archivePath build/App.xcarchive archive
+          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -archivePath build/App.xcarchive archive 2>&1 | tail -100
       - name: Export IPA
         script: |
           cd ios/App
-          xcode-project build-ipa --workspace App.xcworkspace --scheme App --archive-xcargs "-archivePath build/App.xcarchive"
+          xcode-project build-ipa --workspace App.xcworkspace --scheme App 2>&1 | tail -100
     artifacts:
       - ios/App/build/ipa/*.ipa
       - ios/App/*.ipa
-      - ./*.ipa
+      - "**/*.ipa"
     publishing:
       app_store_connect:
         auth: integration
