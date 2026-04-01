@@ -21,30 +21,93 @@ workflows:
         script: npx cap add ios || true && npx cap sync ios
       - name: Set up app icon
         script: |
-          echo "Looking for icon..."
-          ls -la *.png || true
-          find . -name "phillyhubicon*" || true
           if [ -f "phillyhubicon.png" ]; then
-            echo "Found icon, copying..."
             mkdir -p ios/App/App/Assets.xcassets/AppIcon.appiconset
             cp phillyhubicon.png ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
             echo '{"images":[{"filename":"AppIcon-1024.png","idiom":"universal","platform":"ios","size":"1024x1024"}],"info":{"author":"xcode","version":1}}' > ios/App/App/Assets.xcassets/AppIcon.appiconset/Contents.json
-            echo "Icon set up successfully"
-          else
-            echo "ERROR: Icon not found!"
-            ls -la
           fi
-      - name: Add privacy descriptions
+      - name: Add privacy manifest
+        script: |
+          cat > ios/App/App/PrivacyInfo.xcprivacy << 'PRIVEOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>NSPrivacyAccessedAPITypes</key>
+            <array>
+              <dict>
+                <key>NSPrivacyAccessedAPIType</key>
+                <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+                <key>NSPrivacyAccessedAPITypeReasons</key>
+                <array>
+                  <string>CA92.1</string>
+                </array>
+              </dict>
+              <dict>
+                <key>NSPrivacyAccessedAPIType</key>
+                <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+                <key>NSPrivacyAccessedAPITypeReasons</key>
+                <array>
+                  <string>C617.1</string>
+                </array>
+              </dict>
+              <dict>
+                <key>NSPrivacyAccessedAPIType</key>
+                <string>NSPrivacyAccessedAPICategoryDiskSpace</string>
+                <key>NSPrivacyAccessedAPITypeReasons</key>
+                <array>
+                  <string>E174.1</string>
+                </array>
+              </dict>
+              <dict>
+                <key>NSPrivacyAccessedAPIType</key>
+                <string>NSPrivacyAccessedAPICategorySystemBootTime</string>
+                <key>NSPrivacyAccessedAPITypeReasons</key>
+                <array>
+                  <string>35F9.1</string>
+                </array>
+              </dict>
+            </array>
+            <key>NSPrivacyCollectedDataTypes</key>
+            <array/>
+            <key>NSPrivacyTracking</key>
+            <false/>
+            <key>NSPrivacyTrackingDomains</key>
+            <array/>
+          </dict>
+          </plist>
+          PRIVEOF
+      - name: Add privacy descriptions and IAP entitlement
         script: |
           cd ios/App/App
-          /usr/libexec/PlistBuddy -c "Add :NSLocationWhenInUseUsageDescription string 'PhillyHub uses your location to show distances to landmarks, find nearby restaurants and services, and display your position on the map.'" Info.plist
-          /usr/libexec/PlistBuddy -c "Add :NSLocationAlwaysAndWhenInUseUsageDescription string 'PhillyHub uses your location to show distances to landmarks, find nearby restaurants and services, and display your position on the map.'" Info.plist
+          /usr/libexec/PlistBuddy -c "Add :NSLocationWhenInUseUsageDescription string 'PhillyHub uses your location to show distances to landmarks, find nearby restaurants and services, and display your position on the map.'" Info.plist || true
+          /usr/libexec/PlistBuddy -c "Add :NSLocationAlwaysAndWhenInUseUsageDescription string 'PhillyHub uses your location to show distances to landmarks, find nearby restaurants and services, and display your position on the map.'" Info.plist || true
+          cd ..
+          cat > App/App.entitlements << 'ENTEOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>com.apple.developer.in-app-payments</key>
+            <array>
+              <string>merchant.com.lilpillstudios.phillyhub</string>
+            </array>
+          </dict>
+          </plist>
+          ENTEOF
+          # Add entitlements to build settings
+          sed -i '' 's/CODE_SIGN_ENTITLEMENTS = "";/CODE_SIGN_ENTITLEMENTS = App\/App.entitlements;/g' App.xcodeproj/project.pbxproj
+          # If the above didn't match, try adding it
+          if ! grep -q "App.entitlements" App.xcodeproj/project.pbxproj; then
+            sed -i '' '/CODE_SIGN_IDENTITY/a\
+                            CODE_SIGN_ENTITLEMENTS = App/App.entitlements;' App.xcodeproj/project.pbxproj
+          fi
       - name: Install CocoaPods
         script: cd ios/App && pod install
       - name: Set deployment target
         script: cd ios/App && sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*/IPHONEOS_DEPLOYMENT_TARGET = 15.0/g' App.xcodeproj/project.pbxproj
       - name: Increment build number
-        script: cd ios/App && agvtool new-version -all 4
+        script: cd ios/App && agvtool new-version -all 5
       - name: Build iOS
         script: |
           cd ios/App
