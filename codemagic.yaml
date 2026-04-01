@@ -14,7 +14,9 @@ workflows:
         bundle_identifier: com.lilpillstudios.phillyhub
     scripts:
       - name: Install dependencies
-        script: npm install && npm install @capacitor/ios@5.7.0 --legacy-peer-deps
+        script: |
+          npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/ios@6 @capacitor/app@6 @capacitor/geolocation@6 @capacitor/haptics@6 @capacitor/status-bar@6 --legacy-peer-deps
+          npm install
       - name: Build web assets
         script: npm run build
       - name: Add iOS platform
@@ -26,57 +28,57 @@ workflows:
             cp phillyhubicon.png ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
             echo '{"images":[{"filename":"AppIcon-1024.png","idiom":"universal","platform":"ios","size":"1024x1024"}],"info":{"author":"xcode","version":1}}' > ios/App/App/Assets.xcassets/AppIcon.appiconset/Contents.json
           fi
-      - name: Add privacy manifests
+      - name: Add app privacy manifest
         script: |
-          PRIVACY='<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>NSPrivacyAccessedAPITypes</key><array><dict><key>NSPrivacyAccessedAPIType</key><string>NSPrivacyAccessedAPICategoryUserDefaults</string><key>NSPrivacyAccessedAPITypeReasons</key><array><string>CA92.1</string></array></dict><dict><key>NSPrivacyAccessedAPIType</key><string>NSPrivacyAccessedAPICategoryFileTimestamp</string><key>NSPrivacyAccessedAPITypeReasons</key><array><string>C617.1</string></array></dict><dict><key>NSPrivacyAccessedAPIType</key><string>NSPrivacyAccessedAPICategoryDiskSpace</string><key>NSPrivacyAccessedAPITypeReasons</key><array><string>E174.1</string></array></dict><dict><key>NSPrivacyAccessedAPIType</key><string>NSPrivacyAccessedAPICategorySystemBootTime</string><key>NSPrivacyAccessedAPITypeReasons</key><array><string>35F9.1</string></array></dict></array><key>NSPrivacyCollectedDataTypes</key><array/><key>NSPrivacyTracking</key><false/><key>NSPrivacyTrackingDomains</key><array/></dict></plist>'
-          echo "$PRIVACY" > ios/App/App/PrivacyInfo.xcprivacy
-          echo "App-level manifest created"
-          find ios/App/Pods -name "Capacitor.xcodeproj" -exec dirname {} \; | while read dir; do
-            echo "$PRIVACY" > "$dir/PrivacyInfo.xcprivacy"
-            echo "Capacitor manifest: $dir"
-          done
-          find ios/App/Pods -name "CapacitorCordova.xcodeproj" -exec dirname {} \; | while read dir; do
-            echo "$PRIVACY" > "$dir/PrivacyInfo.xcprivacy"
-            echo "Cordova manifest: $dir"
-          done
-          find ios/App/Pods/Target\ Support\ Files -type d -name "Capacitor" | while read dir; do
-            echo "$PRIVACY" > "$dir/PrivacyInfo.xcprivacy"
-            echo "Capacitor support: $dir"
-          done
-          find ios/App/Pods/Target\ Support\ Files -type d -name "CapacitorCordova" | while read dir; do
-            echo "$PRIVACY" > "$dir/PrivacyInfo.xcprivacy"
-            echo "Cordova support: $dir"
-          done
-      - name: Inject manifests into framework builds
-        script: |
-          cd ios/App
-          ruby << 'RUBYEOF'
-          require 'xcodeproj'
-          workspace = Xcodeproj::Workspace.new_from_xcworkspace('App.xcworkspace')
-          pods_project = Xcodeproj::Project.open('Pods/Pods.xcodeproj')
-          privacy_content = File.read('App/PrivacyInfo.xcprivacy')
-          ['Capacitor', 'CapacitorCordova'].each do |target_name|
-            target = pods_project.targets.find { |t| t.name == target_name }
-            if target
-              resources_phase = target.resources_build_phase
-              privacy_path = "Target Support Files/#{target_name}/PrivacyInfo.xcprivacy"
-              File.write("Pods/#{privacy_path}", privacy_content)
-              file_ref = pods_project.main_group.find_file_by_path(privacy_path)
-              unless file_ref
-                group = pods_project.main_group.find_subpath("Target Support Files/#{target_name}", true)
-                file_ref = group.new_file('PrivacyInfo.xcprivacy')
-              end
-              unless resources_phase.files_references.include?(file_ref)
-                resources_phase.add_file_reference(file_ref)
-              end
-              puts "Added PrivacyInfo.xcprivacy to #{target_name}"
-            else
-              puts "Target #{target_name} not found"
-            end
-          end
-          pods_project.save
-          puts "Pods project saved"
-          RUBYEOF
+          cat > ios/App/App/PrivacyInfo.xcprivacy << 'PRIVEOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>NSPrivacyAccessedAPITypes</key>
+            <array>
+              <dict>
+                <key>NSPrivacyAccessedAPIType</key>
+                <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+                <key>NSPrivacyAccessedAPITypeReasons</key>
+                <array>
+                  <string>CA92.1</string>
+                </array>
+              </dict>
+              <dict>
+                <key>NSPrivacyAccessedAPIType</key>
+                <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+                <key>NSPrivacyAccessedAPITypeReasons</key>
+                <array>
+                  <string>C617.1</string>
+                </array>
+              </dict>
+              <dict>
+                <key>NSPrivacyAccessedAPIType</key>
+                <string>NSPrivacyAccessedAPICategoryDiskSpace</string>
+                <key>NSPrivacyAccessedAPITypeReasons</key>
+                <array>
+                  <string>E174.1</string>
+                </array>
+              </dict>
+              <dict>
+                <key>NSPrivacyAccessedAPIType</key>
+                <string>NSPrivacyAccessedAPICategorySystemBootTime</string>
+                <key>NSPrivacyAccessedAPITypeReasons</key>
+                <array>
+                  <string>35F9.1</string>
+                </array>
+              </dict>
+            </array>
+            <key>NSPrivacyCollectedDataTypes</key>
+            <array/>
+            <key>NSPrivacyTracking</key>
+            <false/>
+            <key>NSPrivacyTrackingDomains</key>
+            <array/>
+          </dict>
+          </plist>
+          PRIVEOF
       - name: Configure Info.plist
         script: |
           cd ios/App/App
