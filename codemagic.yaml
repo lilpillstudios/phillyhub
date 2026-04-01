@@ -88,8 +88,11 @@ workflows:
         script: cd ios/App && pod install
       - name: Set deployment target
         script: cd ios/App && sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*/IPHONEOS_DEPLOYMENT_TARGET = 15.0/g' App.xcodeproj/project.pbxproj
-      - name: Increment build number
-        script: cd ios/App && agvtool new-version -all 8
+      - name: Auto increment build number
+        script: |
+          BUILD_NUMBER=$(($(date +%s)/60))
+          echo "Setting build number to: $BUILD_NUMBER"
+          cd ios/App && agvtool new-version -all $BUILD_NUMBER
       - name: Build iOS
         script: |
           cd ios/App
