@@ -2,24 +2,18 @@
  * billing.js — PhillyHub In-App Purchase Integration
  * Lil Pill Studios © 2026
  *
- * Uses cordova-plugin-purchase (CdvPurchase) for Google Play Billing.
- * This plugin works with Capacitor through the Cordova compatibility layer.
+ * Uses cordova-plugin-purchase (CdvPurchase) for both:
+ * - Google Play Billing (Android)
+ * - Apple StoreKit (iOS)
  *
- * Setup in Google Play Console:
- * 1. Create an in-app product with ID: "locals_guide_unlock"
- * 2. Set price: $3.99 (or your regional equivalent)
- * 3. Type: Non-consumable (one-time purchase)
+ * Setup:
+ * Google Play Console: Create in-app product "locals_guide_unlock" at $3.99, non-consumable
+ * App Store Connect: Create in-app purchase "locals_guide_unlock" at $3.99, non-consumable
  *
  * Usage in your React component:
  *   import { initBilling, purchaseLocalsGuide, restorePurchases, isPurchased } from './billing';
- *
- *   // On app mount:
  *   useEffect(() => { initBilling(setIsPro); }, []);
- *
- *   // On unlock button tap:
  *   const handleUnlock = () => purchaseLocalsGuide();
- *
- *   // On "Restore Purchases" tap:
  *   const handleRestore = () => restorePurchases();
  */
 
@@ -28,6 +22,26 @@ const STORAGE_KEY = "ph_pro";
 
 let storeReady = false;
 let onPurchaseCallback = null;
+let currentPlatform = null;
+
+/**
+ * Detect which platform we're running on.
+ */
+function detectPlatform() {
+  if (typeof window === "undefined" || !window.CdvPurchase) return null;
+  const { Platform } = window.CdvPurchase;
+  const ua = navigator.userAgent || "";
+  if (/iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) {
+    return Platform.APPLE_APPSTORE;
+  }
+  if (/Android/.test(ua)) {
+    return Platform.GOOGLE_PLAY;
+  }
+  if (window.webkit && window.webkit.messageHandlers) {
+    return Platform.APPLE_APPSTORE;
+  }
+  return Platform.GOOGLE_PLAY;
+}
 
 /**
  * Initialize the billing system.
@@ -37,38 +51,35 @@ let onPurchaseCallback = null;
 export function initBilling(onPurchaseComplete) {
   onPurchaseCallback = onPurchaseComplete;
 
-  // Check if we're in a Capacitor/Cordova native context
   if (typeof window === "undefined" || !window.CdvPurchase) {
     console.log("[Billing] Not in native context — billing disabled");
-    // Check localStorage for existing unlock (PWA fallback)
     checkLocalUnlock();
     return;
   }
 
-  const { store, ProductType, Platform } = window.CdvPurchase;
+  currentPlatform = detectPlatform();
+  console.log("[Billing] Detected platform:", currentPlatform);
 
-  // Register the product
+  const { store, ProductType } = window.CdvPurchase;
+
   store.register([
     {
       id: PRODUCT_ID,
       type: ProductType.NON_CONSUMABLE,
-      platform: Platform.GOOGLE_PLAY,
+      platform: currentPlatform,
     },
   ]);
 
-  // Listen for purchase approval
   store.when()
     .productUpdated(() => {
       console.log("[Billing] Product catalog updated");
       storeReady = true;
     })
     .approved((transaction) => {
-      // Purchase approved — verify and finish
       console.log("[Billing] Purchase approved:", transaction.transactionId);
       transaction.verify();
     })
     .verified((receipt) => {
-      // Receipt verified — unlock the content
       console.log("[Billing] Receipt verified");
       receipt.finish();
       unlockPro();
@@ -77,21 +88,30 @@ export function initBilling(onPurchaseComplete) {
       console.log("[Billing] Transaction finished");
     })
     .receiptUpdated((receipt) => {
-      // Check if product is already owned (restore flow)
       if (receipt.hasTransaction({ id: PRODUCT_ID })) {
         unlockPro();
       }
     });
 
-  // Initialize the store
-  store.initialize([Platform.GOOGLE_PLAY]).then(() => {
-    console.log("[Billing] Store initialized");
+  store.initialize([currentPlatform]).then(() => {
+    console.log("[Billing] Store initialized for", currentPlatform);
     storeReady = true;
-
-    // Check for existing purchases on startup
     checkExistingPurchases();
   }).catch((err) => {
     console.error("[Billing] Init error:", err);
+    const { Platform } = window.CdvPurchase;
+    const fallback = currentPlatform === Platform.GOOGLE_PLAY
+      ? Platform.APPLE_APPSTORE
+      : Platform.GOOGLE_PLAY;
+    console.log("[Billing] Trying fallback platform:", fallback);
+    store.initialize([fallback]).then(() => {
+      currentPlatform = fallback;
+      storeReady = true;
+      console.log("[Billing] Fallback initialized for", fallback);
+      checkExistingPurchases();
+    }).catch((err2) => {
+      console.error("[Billing] Fallback also failed:", err2);
+    });
   });
 }
 
@@ -99,12 +119,10 @@ export function initBilling(onPurchaseComplete) {
  * Trigger the purchase flow for Local's Guide.
  */
 export function purchaseLocalsGuide() {
-  // PWA fallback — if no native billing, show a message
   if (!window.CdvPurchase) {
-    // For PWA distribution, you could redirect to Gumroad or show a code entry
     alert(
-      "In-app purchase is available in the Android app.\n\n" +
-      "Download PhillyHub from Google Play or get the APK from lilpillstudios.gumroad.com to unlock Local's Guide."
+      "In-app purchase is available in the app.\n\n" +
+      "Download PhillyHub from the App Store or Google Play to unlock Local's Guide."
     );
     return;
   }
@@ -123,21 +141,18 @@ export function purchaseLocalsGuide() {
     return;
   }
 
-  // Check if already owned
   if (product.owned) {
     unlockPro();
     return;
   }
 
-  // Get the offer and initiate purchase
   const offer = product.getOffer();
   if (offer) {
     store.order(offer).then(() => {
       console.log("[Billing] Purchase initiated");
     }).catch((err) => {
       console.error("[Billing] Purchase error:", err);
-      if (err.code !== "6777001") {
-        // 6777001 = user cancelled — don't show error for that
+      if (err.code !== "6777001" && err.code !== 2) {
         alert("Purchase failed. Please try again.");
       }
     });
@@ -146,11 +161,10 @@ export function purchaseLocalsGuide() {
 
 /**
  * Restore previous purchases.
- * Required by Google Play policy — must be accessible in your UI.
+ * Required by both Apple and Google policies.
  */
 export function restorePurchases() {
   if (!window.CdvPurchase) {
-    // Check localStorage for PWA
     checkLocalUnlock();
     return;
   }
