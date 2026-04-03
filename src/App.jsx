@@ -411,11 +411,12 @@ export default function PhillyHub(){
         <div style={S.cnt}>{cat==="food"?`${fFd.length} ${t.spots}`:cat==="services"?`${fSv.length} ${t.nearby}`:cat==="community"?`${fCm.length}`:`${fLm.length} ${fLm.length===1?t.result:t.results}`}</div>
         <div style={S.lst}>
           {/* Premium upsell */}
-          {cat==="all"&&!isPro&&<div style={{...S.cd(0),background:`${P.gold}08`,border:`1px solid ${P.gold}25`}} onClick={unlock}>
+          {cat==="all"&&!isPro&&<><div style={{...S.cd(0),background:`${P.gold}08`,border:`1px solid ${P.gold}25`}} onClick={unlock}>
             <div style={{fontSize:14,fontWeight:700,color:P.gold}}>👑 {t.localsGuide}</div>
             <div style={{fontSize:11,color:P.textSec,margin:"4px 0 8px"}}>{t.walkingTours}</div>
             <div style={{padding:"8px 0",borderRadius:8,background:P.gradG,textAlign:"center",fontSize:13,fontWeight:600,color:"#0F1117"}}>{t.unlockFor}</div>
-          </div>}
+          </div>
+          <div style={{textAlign:"center",padding:"4px 0 12px",cursor:"pointer"}} onClick={()=>{restorePurchases();haptic()}}><span style={{fontSize:12,color:P.sky,fontWeight:500}}>{t.restorePurchases}</span></div></>}
           {/* Premium tours */}
           {cat==="all"&&isPro&&<>{PTOURS.map((tour,i)=><div key={tour.id} style={{...S.cd(i*0.04),borderColor:`${P.gold}20`}} onClick={()=>openD("tour",tour)}>
             <div style={S.nm}>👑 {tour.name}</div>
