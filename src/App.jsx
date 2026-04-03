@@ -30,11 +30,11 @@ const LM=[
 {id:"lb14",name:"Edgar Allan Poe House",lat:39.9618,lng:-75.1498,type:"museum",year:1843,addr:"532 N 7th St",desc:"Only surviving Poe residence in Philly. Free.",u:false},
 {id:"lb15",name:"Mütter Museum",lat:39.9531,lng:-75.1764,type:"museum",year:1863,addr:"19 S 22nd St",desc:"Medical oddities. Einstein's brain, 9-foot colon.",u:false},
 {id:"lb16",name:"Rittenhouse Square",lat:39.9496,lng:-75.1718,type:"park",year:1683,addr:"210 W Rittenhouse Sq",desc:"Tree-lined paths, fountain, upscale restaurants.",u:false},
-{id:"lb17",name:"African American Museum",lat:39.9536,lng:-75.1515,type:"museum",year:1976,addr:"701 Arch St",desc:"First institution by a major city for African American heritage.",u:false},
+{id:"lb17",name:"African American Museum",lat:39.9536,lng:-75.1515,type:"museum",year:1976,addr:"701 Arch St",desc:"First institution by a major city for African American heritage. 2026: Special 250th exhibits on Black Philadelphia's role in founding America.",u:false},
 {id:"lb18",name:"Declaration House",lat:39.9500,lng:-75.1520,type:"monument",year:1776,addr:"700 Market St",desc:"Jefferson drafted the Declaration here.",u:true},
 {id:"lb19",name:"Gloria Dei Church",lat:39.9340,lng:-75.1435,type:"church",year:1698,addr:"916 S Swanson St",desc:"Oldest church in PA. Swedish colonists.",u:true},
 {id:"lb20",name:"Franklin's Grave",lat:39.9498,lng:-75.1519,type:"monument",year:1790,addr:"340 N 5th St",desc:"Christ Church Burial Ground. Toss a penny.",u:false},
-{id:"lb21",name:"Lemon Hill (FIFA FanFest)",lat:39.9715,lng:-75.1830,type:"park",year:1800,addr:"Sedgley Dr, Fairmount Park",desc:"FIFA FanFest — up to 25K daily for World Cup.",u:false},
+{id:"lb21",name:"Lemon Hill (Fan Festival)",lat:39.9715,lng:-75.1830,type:"park",year:1800,addr:"Sedgley Dr, Fairmount Park",desc:"Official soccer fan festival site — up to 25K daily for international matches.",u:false},
 {id:"lb22",name:"Mann Center",lat:39.9770,lng:-75.2105,type:"park",year:1976,addr:"5201 Parkside Ave",desc:"Open-air concerts. Philly Orchestra summer home.",u:false},
 {id:"lb23",name:"Please Touch Museum",lat:39.9797,lng:-75.2094,type:"museum",year:1976,addr:"4231 Avenue of the Republic",desc:"2026: 'Discovering Democracy' civics exhibit.",u:false},
 {id:"lb24",name:"Laurel Hill Cemetery",lat:40.0072,lng:-75.1838,type:"monument",year:1836,addr:"3822 Ridge Ave",desc:"Victorian garden cemetery. National Historic Landmark.",u:true},
@@ -46,17 +46,34 @@ const LM=[
 {id:"lb30",name:"FDR Park",lat:39.9005,lng:-75.1760,type:"park",year:1926,addr:"1500 Pattison Ave",desc:"200 acres near stadiums. Pre-match hangout.",u:false},
 {id:"lb31",name:"Cheltenham Square",lat:40.0590,lng:-75.1340,type:"monument",year:1960,addr:"Cheltenham Ave & Ogontz",desc:"Montgomery County border transit hub.",u:false},
 {id:"lb32",name:"Frankford Arsenal",lat:40.0100,lng:-75.0660,type:"museum",year:1816,addr:"4501 Tacony St",desc:"Former Army munitions factory. Now arts spaces.",u:true},
+// ─── BLACK AMERICAN HISTORY ────────────────────────────────────────
+{id:"lb33",name:"Mother Bethel AME Church",lat:39.9438,lng:-75.1498,type:"church",year:1794,addr:"419 S 6th St",desc:"Oldest AME congregation in America. Founded by Richard Allen, born enslaved. National Historic Landmark. 250th context: Black Philadelphia shaped American freedom from the start.",u:false},
+{id:"lb34",name:"Johnson House Historic Site",lat:40.0340,lng:-75.1710,type:"museum",year:1768,addr:"6306 Germantown Ave",desc:"Confirmed Underground Railroad station. Germantown Quakers sheltered freedom seekers here. Tours available.",u:true},
+{id:"lb35",name:"Belmont Mansion",lat:39.9780,lng:-75.2020,type:"museum",year:1745,addr:"2000 Belmont Mansion Dr",desc:"Underground Railroad site in Fairmount Park. Now the American Women's Heritage Museum. Free.",u:true},
+{id:"lb36",name:"Octavius V. Catto Memorial",lat:39.9524,lng:-75.1636,type:"monument",year:2017,addr:"City Hall, S Plaza",desc:"First public statue of a named African American in Philadelphia. Civil rights pioneer, murdered for fighting for Black voting rights in 1871.",u:false},
+{id:"lb37",name:"President's House",lat:39.9497,lng:-75.1498,type:"monument",year:2010,addr:"525 Market St",desc:"Where Washington and Adams lived as president — and where 9 enslaved people served them. Open-air memorial next to the Liberty Bell.",u:false},
+{id:"lb38",name:"Paul Robeson House",lat:39.9570,lng:-75.1870,type:"museum",year:1911,addr:"4951 Walnut St",desc:"Home of the athlete, actor, singer, and civil rights activist. West Philly. National Historic Landmark.",u:true},
+{id:"lb39",name:"Colored Girls Museum",lat:39.9600,lng:-75.2050,type:"museum",year:2015,addr:"4613 Newhall St",desc:"Intimate museum in a Germantown rowhouse celebrating the stories of ordinary Black women. By appointment.",u:true},
+{id:"lb40",name:"Church of the Advocate",lat:39.9780,lng:-75.1620,type:"church",year:1897,addr:"1801 W Diamond St",desc:"North Philly. Site of the 1970 Black Panther convention. Murals by Walter Edmonds. Gothic Revival architecture.",u:true},
+{id:"lb41",name:"Fair Hill Burial Ground",lat:39.9920,lng:-75.1420,type:"monument",year:1703,addr:"2901 Germantown Ave",desc:"Resting place of Lucretia Mott and Robert Purvis — abolitionists who shaped the movement. Quaker cemetery.",u:true},
+{id:"lb42",name:"Engine Company 11",lat:39.9540,lng:-75.1700,type:"monument",year:1871,addr:"1226 Ridge Ave",desc:"First Black firehouse in Philadelphia. The men who served here fought for the right to fight fires.",u:true},
+{id:"lb43",name:"Henry 'Hank' Gathers Recreation Center",lat:39.9750,lng:-75.1560,type:"monument",year:1993,addr:"2501 W Lehigh Ave",desc:"Named for the North Philly basketball legend. Community center in the heart of Strawberry Mansion.",u:true},
+// ─── STEPHEN GIRARD LANDMARKS ──────────────────────────────────────
+{id:"lb44",name:"Girard College / Founder's Hall",lat:39.9720,lng:-75.1740,type:"museum",year:1848,addr:"2101 S College Ave",desc:"Founded by Stephen Girard for orphaned children. Founder's Hall is a Greek Revival masterpiece. 250th context: Girard financed the War of 1812, saving the nation. Desegregated via Supreme Court in 1968.",u:false},
+{id:"lb45",name:"First Bank of the United States",lat:39.9481,lng:-75.1451,type:"monument",year:1797,addr:"116 S 3rd St",desc:"America's first central bank. Hamilton's vision, Girard saved it. One of the oldest bank buildings in the country.",u:false},
+{id:"lb46",name:"Girard Row",lat:39.9435,lng:-75.1570,type:"monument",year:1833,addr:"326-334 Spruce St",desc:"Row houses built by Girard's estate. Greek Revival architecture. Still standing in Society Hill.",u:true},
+{id:"lb47",name:"Bush Hill (Girard's Yellow Fever Hospital)",lat:39.9650,lng:-75.1700,type:"monument",year:1793,addr:"Near 17th & Spring Garden (site)",desc:"During the 1793 yellow fever epidemic, Girard personally nursed the sick here when everyone else fled. 5,000 Philadelphians died. 250th context: The epidemic reshaped American public health.",u:true},
 ];
 
 // ─── EVENTS ──────────────────────────────────────────────────────────
 const EV=[
-{id:"ev01",title:"FIFA: Ivory Coast vs Ecuador",date:"2026-06-14",time:"7:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group E opener.",tix:"https://www.fifa.com/tickets"},
-{id:"ev02",title:"FIFA: Brazil vs Haiti",date:"2026-06-19",time:"9:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group C. Brazil's first match.",tix:"https://www.fifa.com/tickets"},
-{id:"ev03",title:"FIFA: France vs TBD",date:"2026-06-22",time:"5:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group I.",tix:"https://www.fifa.com/tickets"},
-{id:"ev04",title:"FIFA: Curaçao vs Ivory Coast",date:"2026-06-25",time:"4:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group E final matchday.",tix:"https://www.fifa.com/tickets"},
-{id:"ev05",title:"FIFA: Croatia vs Ghana",date:"2026-06-27",time:"5:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group L. Last group stage in Philly.",tix:"https://www.fifa.com/tickets"},
-{id:"ev06",title:"FIFA: Round of 16",date:"2026-07-04",time:"5:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Knockout on America's 250th birthday.",tix:"https://www.fifa.com/tickets"},
-{id:"ev07",title:"FIFA FanFest at Lemon Hill",date:"2026-06-11",time:"All Day",venue:"Lemon Hill",addr:"Sedgley Dr, Fairmount Park",lat:39.9715,lng:-75.1830,cat:"fifa",free:true,desc:"5-week watch party festival. Up to 25K daily."},
+{id:"ev01",title:"Ivory Coast vs Ecuador",date:"2026-06-14",time:"7:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group E opener. First international soccer match in Philadelphia.",tix:"https://www.fifa.com/tickets"},
+{id:"ev02",title:"Brazil vs Haiti",date:"2026-06-19",time:"9:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group C. Brazil's first match — massive international crowds.",tix:"https://www.fifa.com/tickets"},
+{id:"ev03",title:"France vs TBD",date:"2026-06-22",time:"5:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group I. France plays the playoff winner.",tix:"https://www.fifa.com/tickets"},
+{id:"ev04",title:"Curaçao vs Ivory Coast",date:"2026-06-25",time:"4:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group E final matchday.",tix:"https://www.fifa.com/tickets"},
+{id:"ev05",title:"Croatia vs Ghana",date:"2026-06-27",time:"5:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group L. Last group stage match in Philadelphia.",tix:"https://www.fifa.com/tickets"},
+{id:"ev06",title:"Round of 16 Match",date:"2026-07-04",time:"5:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Knockout round on America's 250th Anniversary.",tix:"https://www.fifa.com/tickets"},
+{id:"ev07",title:"Soccer Fan Festival at Lemon Hill",date:"2026-06-11",time:"All Day",venue:"Lemon Hill",addr:"Sedgley Dr, Fairmount Park",lat:39.9715,lng:-75.1830,cat:"fifa",free:true,desc:"5-week watch party festival. Up to 25K daily. Big screens, food, music."},
 {id:"ev08",title:"52 Weeks of Firsts",date:"2026-01-01",time:"Weekly",venue:"Citywide",addr:"Various",lat:39.9524,lng:-75.1636,cat:"america250",free:true,desc:"Free weekly events honoring Philly firsts."},
 {id:"ev09",title:"Red, White & Blue To-Do",date:"2026-06-28",time:"All Day",venue:"Historic District",addr:"Independence Mall",lat:39.9489,lng:-75.1500,cat:"america250",free:true,desc:"Parades, concerts in America's most historic square mile."},
 {id:"ev10",title:"Wawa Welcome America",date:"2026-06-19",time:"All Day",venue:"Benjamin Franklin Pkwy",addr:"Benjamin Franklin Parkway",lat:39.9630,lng:-75.1750,cat:"america250",free:true,desc:"16 days, 6 nights fireworks, July 3 parade."},
@@ -93,11 +110,40 @@ const SVC=[
 
 // ─── PREMIUM CONTENT ─────────────────────────────────────────────────
 const PTOURS=[
-{id:"pt01",name:"Revolutionary Secrets Walk",stops:["lb13","lb18","lb07","lb20","lb02"],dur:"90 min",desc:"The stories guides don't tell. Carpenter's Hall, Declaration House, Franklin's grave."},
-{id:"pt02",name:"South Philly Food Crawl",stops:["f01","f02","f04","f13","f03"],dur:"2 hours",desc:"Pat's vs Geno's vs John's — settle the debate. Then barbacoa tacos and Jim's."},
-{id:"pt03",name:"Art & Architecture Loop",stops:["lb03","lb09","lb10","lb16","lb15"],dur:"2.5 hours",desc:"Art Museum to City Hall to Rittenhouse. Philly's most photogenic mile."},
-{id:"pt04",name:"Hidden Philly",stops:["lb13","lb18","lb19","lb24","lb26"],dur:"Half day",desc:"The spots most tourists walk right past."},
-{id:"pt05",name:"Matchday Circuit",stops:["lb29","lb30","lb21","lb03"],dur:"Full day",desc:"FDR Park → NRG for the game → FanFest at Lemon Hill → Art Museum sunset."},
+{id:"pt01",name:"Revolutionary Secrets Walk",stops:[
+  {sid:"lb13",note:"Ask a docent about the secret tunnel rumor to Independence Hall."},
+  {sid:"lb18",note:"Stand in the room where Jefferson wrote the words that changed the world."},
+  {sid:"lb07",note:"Find Franklin's pew — it's still marked with a brass plate."},
+  {sid:"lb20",note:"Toss a penny on the headstone. Locals say it's good luck."},
+  {sid:"lb02",note:"End where it all began. The Assembly Room still has the original chairs."}
+],dur:"90 min",dist:"1.3 mi",bestTime:"Weekday mornings before 10am — fewer tour groups, quieter streets.",tip:"Bring water. The cobblestones in Old City are beautiful but unforgiving on your feet.",direction:"Start in Old City, loop south through the Historic District.",tags:["Easy walk","History deep","Photo ops"],startLat:39.9482,startLng:-75.1476,desc:"The stories guides don't tell. Carpenter's Hall, Declaration House, Franklin's grave."},
+{id:"pt02",name:"South Philly Food Crawl",stops:[
+  {sid:"f01",note:"Order 'whiz wit' — that's Cheez Whiz with onions. Don't overthink it."},
+  {sid:"f02",note:"Cross the street for the rivalry. Compare and pick your side forever."},
+  {sid:"f04",note:"The roast pork Italian might be better than both cheesesteaks. Seriously."},
+  {sid:"f13",note:"Weekend only. Get the barbacoa tacos — James Beard didn't lie."},
+  {sid:"f03",note:"Rebuilt after the 2022 fire. Many locals say this is the actual best."}
+],dur:"2 hours",dist:"3.4 mi",bestTime:"Saturday 10am-1pm — all spots open, Barbacoa is only weekends.",tip:"Come hungry. Skip breakfast. You're eating at 5 stops. Pace yourself.",direction:"Start at the Passyunk cheesesteak corner, head south to the Italian Market, loop back up to South Street.",tags:["Food heavy","Easy walk","Kid friendly"],startLat:39.9335,startLng:-75.1593,desc:"Pat's vs Geno's vs John's — settle the debate. Then barbacoa tacos and Jim's."},
+{id:"pt03",name:"Art & Architecture Loop",stops:[
+  {sid:"lb03",note:"Run the Rocky steps first. Then go inside — 240K works spanning 2,000 years."},
+  {sid:"lb09",note:"Take the elevator to the observation deck. 360° of the entire city."},
+  {sid:"lb10",note:"The LOVE sculpture is smaller than you think. Best shot: stand across JFK Blvd."},
+  {sid:"lb16",note:"Grab a bench, people-watch. This is Philly's living room."},
+  {sid:"lb15",note:"Einstein's brain is here. Also a 9-foot colon. You've been warned."}
+],dur:"2.5 hours",dist:"2.3 mi",bestTime:"Start at 5pm — catch golden hour at the Art Museum steps, end at Rittenhouse at sunset.",tip:"Wear comfortable shoes. The Parkway stretch from Art Museum to City Hall is all pavement.",direction:"Start at the Art Museum on the Parkway, head east through Center City to Rittenhouse.",tags:["Easy walk","Photo ops","Cultural"],startLat:39.9656,startLng:-75.1810,desc:"Art Museum to City Hall to Rittenhouse. Philly's most photogenic mile."},
+{id:"pt04",name:"Hidden Philly",stops:[
+  {sid:"lb13",note:"Quieter than Independence Hall, equally historic. First Continental Congress met here."},
+  {sid:"lb18",note:"Free to enter. Most tourists walk right past this one."},
+  {sid:"lb19",note:"Oldest church in Pennsylvania. Swedish colonists built it in 1698. Cemetery dates to the 1600s."},
+  {sid:"lb24",note:"Overlooks the Schuylkill. Victorian funerary art. Bring a camera."},
+  {sid:"lb26",note:"America's oldest botanical garden. The new FloatLab opens in 2026."}
+],dur:"Half day",dist:"12.7 mi (use transit between stops)",bestTime:"Weekend morning. Take BSL south for Gloria Dei, then transit to Laurel Hill and Bartram's.",tip:"This tour requires transit between stops 3-4 and 4-5. Use the Transit tab to plan. Not walkable end-to-end.",direction:"Start in Old City, head south to Queen Village, then transit to East Falls and Southwest Philly.",tags:["Half day","Transit needed","Off the beaten path"],startLat:39.9482,startLng:-75.1476,desc:"The spots most tourists walk right past. Deep Philly for the curious."},
+{id:"pt05",name:"Matchday Circuit",stops:[
+  {sid:"lb29",note:"Arrive early. Explore the Sports Complex — Lincoln Financial Field, Citizens Bank Park, Wells Fargo Center all within walking distance."},
+  {sid:"lb30",note:"200 acres of lakes and trails. Perfect pre-match tailgate spot. Food trucks line up on game days."},
+  {sid:"lb21",note:"Up to 25K fans watching on big screens. Live music, food vendors, the energy is unreal."},
+  {sid:"lb03",note:"End at the Rocky steps for sunset over the city. Best view in Philadelphia."}
+],dur:"Full day",dist:"5.9 mi (BSL connects stadium to Fan Festival)",bestTime:"Match day. Get to FDR Park 3 hours before kickoff. Head to Fan Festival after the final whistle.",tip:"Take BSL from NRG Station to Spring Garden for the Fan Festival — don't try to drive. Wear your colors.",direction:"Start at the Sports Complex in South Philly, head north via BSL to Lemon Hill and the Art Museum.",tags:["Full day","Transit needed","Game day","High energy"],startLat:39.9060,startLng:-75.1680,desc:"FDR Park tailgate → the match → Fan Festival at Lemon Hill → Art Museum sunset."},
 ];
 const PGEMS=[
 {id:"pg01",name:"Tun Tavern Site",lat:39.9465,lng:-75.1420,addr:"Front & Walnut Sts",desc:"Birthplace of the U.S. Marine Corps (1775). New recreation opens 2026."},
@@ -113,7 +159,7 @@ const RTS=[
 {id:"MFL",name:"Market-Frankford (L)",type:"subway",color:RC.MFL,desc:"69th St to Frankford. 28 stops.",stops:[{id:"mfl01",name:"69th St TC",lat:39.9619,lng:-75.2559},{id:"mfl11",name:"15th St",lat:39.9527,lng:-75.1665},{id:"mfl14",name:"8th-Market",lat:39.9499,lng:-75.1530},{id:"mfl15",name:"5th St",lat:39.9491,lng:-75.1471},{id:"mfl16",name:"2nd St",lat:39.9475,lng:-75.1415},{id:"mfl17",name:"Spring Garden",lat:39.9611,lng:-75.1500},{id:"mfl19",name:"Berks",lat:39.9710,lng:-75.1340},{id:"mfl23",name:"Allegheny",lat:39.9918,lng:-75.1215},{id:"mfl28",name:"Frankford TC",lat:40.0230,lng:-75.0840}]},
 {id:"BSL",name:"Broad Street (B)",type:"subway",color:RC.BSL,desc:"Fern Rock to NRG Station. 21 stops.",stops:[{id:"bsl01",name:"Fern Rock",lat:40.0380,lng:-75.1500},{id:"bsl09",name:"Cecil B. Moore",lat:39.9749,lng:-75.1567},{id:"bsl14",name:"City Hall",lat:39.9524,lng:-75.1636},{id:"bsl15",name:"Walnut-Locust",lat:39.9487,lng:-75.1650},{id:"bsl19",name:"Snyder",lat:39.9286,lng:-75.1693},{id:"bsl20",name:"Oregon",lat:39.9195,lng:-75.1700},{id:"bsl21",name:"NRG Station",lat:39.9058,lng:-75.1720}]},
 {id:"B4",name:"Bus 4 — Stadium",type:"stadium",color:RC.stadium,desc:"Direct to Sports Complex.",stops:[{id:"b41",name:"5th & Market",lat:39.9498,lng:-75.1470},{id:"b42",name:"Broad & Walnut",lat:39.9487,lng:-75.1638},{id:"b43",name:"Broad & Oregon",lat:39.9195,lng:-75.1700},{id:"b44",name:"Sports Complex",lat:39.9060,lng:-75.1720}]},
-{id:"B49",name:"Bus 49 — FanFest",type:"stadium",color:RC.stadium,desc:"City Hall to Lemon Hill.",stops:[{id:"b491",name:"City Hall",lat:39.9524,lng:-75.1636},{id:"b492",name:"Art Museum",lat:39.9645,lng:-75.1800},{id:"b493",name:"Lemon Hill",lat:39.9715,lng:-75.1830}]},
+{id:"B49",name:"Bus 49 — Fan Festival",type:"stadium",color:RC.stadium,desc:"City Hall to Lemon Hill.",stops:[{id:"b491",name:"City Hall",lat:39.9524,lng:-75.1636},{id:"b492",name:"Art Museum",lat:39.9645,lng:-75.1800},{id:"b493",name:"Lemon Hill",lat:39.9715,lng:-75.1830}]},
 {id:"RR",name:"Airport Line",type:"regional",color:RC.regional,desc:"PHL Airport to Center City.",stops:[{id:"rr1",name:"Terminal E-F",lat:39.8764,lng:-75.2453},{id:"rr4",name:"30th St Station",lat:39.9556,lng:-75.1821},{id:"rr5",name:"Suburban",lat:39.9539,lng:-75.1681},{id:"rr6",name:"Jefferson",lat:39.9525,lng:-75.1580}]},
 ];
 
@@ -126,7 +172,7 @@ function tI(t){return{subway:"M",trolley:"T",bus:"B",regional:"R",stadium:"S"}[t
 function gA(s,r){const v=(s+r).split("").reduce((a,c)=>a+c.charCodeAt(0),0);return{nm:((v*7)%12)+1,d:((v*13)%5)>2?Math.floor(((v*3)%4)+1):0}}
 function nT(l,uLat,uLng){let b=null,bd=Infinity;const ref=uLat?{lat:uLat,lng:uLng}:l;for(const r of RTS)for(const s of r.stops){const d=dKm(ref.lat,ref.lng,s.lat,s.lng);if(d<bd){bd=d;b={route:r,stop:s,dist:d}}}return b}
 function eC(c){return{fifa:"#E63946",america250:"#3B82F6",fireworks:"#F59E0B",concert:"#8B5CF6",festival:"#10B981",parade:"#EC4899"}[c]||"#89CFF0"}
-function eL(c){return{fifa:"FIFA",america250:"250th",fireworks:"July 4th",concert:"Sports",festival:"Arts",parade:"Parade"}[c]||c}
+function eL(c){return{fifa:"Soccer 2026",america250:"250th",fireworks:"July 4th",concert:"Sports",festival:"Arts",parade:"Parade"}[c]||c}
 function fD(d){const dt=new Date(d+"T12:00:00");return dt.toLocaleDateString("en-US",{month:"short",day:"numeric"})}
 function fCC(c){return{cheesesteak:"#FF6B35","fine-dining":"#C084FC",pizza:"#FBBF24",cafe:"#34D399","food-truck":"#F472B6",bar:"#60A5FA",israeli:"#F59E0B",american:"#818CF8",mexican:"#F97316","middle-eastern":"#2DD4BF",vietnamese:"#22D3EE",lebanese:"#FB923C",market:"#A78BFA","puerto-rican":"#FB7185",bakery:"#FBBF24",convenience:"#6EE7B7",seafood:"#22D3EE",brunch:"#FCA5A5",italian:"#F472B6",french:"#C084FC",thai:"#F59E0B",filipino:"#FB923C","korean-mexican":"#F97316",vegan:"#4ADE80",portuguese:"#F97316",georgian:"#E879F9","cocktail-bar":"#818CF8",cajun:"#F97316",steakhouse:"#EF4444",chinese:"#F43F5E",japanese:"#7DD3FC",indonesian:"#FBBF24",tibetan:"#C084FC",malaysian:"#34D399",dessert:"#FCA5A5"}[c]||"#89CFF0"}
 function sC(t){return{atm:"#7BD4A0",bank:"#89CFF0",gas:"#E0A870",pharmacy:"#F09898",restroom:"#C4A8E0"}[t]||"#89CFF0"}
@@ -373,7 +419,8 @@ export default function PhillyHub(){
           {/* Premium tours */}
           {cat==="all"&&isPro&&<>{PTOURS.map((tour,i)=><div key={tour.id} style={{...S.cd(i*0.04),borderColor:`${P.gold}20`}} onClick={()=>openD("tour",tour)}>
             <div style={S.nm}>👑 {tour.name}</div>
-            <div style={{display:"flex",gap:6}}><span style={S.bg(P.gold)}>{tour.stops.length} {t.tours}</span><span style={{fontSize:11,color:P.textMut}}>{tour.dur}</span></div>
+            <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:4}}><span style={S.bg(P.gold)}>{tour.stops.length} stops</span><span style={{fontSize:11,color:P.textMut}}>{tour.dur}</span><span style={{fontSize:11,color:P.textMut}}>· {tour.dist}</span></div>
+            <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{tour.tags.map(tag=><span key={tag} style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:`${P.sky}12`,color:P.sky,fontWeight:500}}>{tag}</span>)}</div>
           </div>)}{PGEMS.map((g,i)=><div key={g.id} style={{...S.cd(i*0.04),borderColor:`${P.gold}15`}} onClick={()=>openD("gem",g)}>
             <div style={S.nm}>💎 {g.name}</div><div style={{fontSize:11,color:P.textMut}}>{g.desc.slice(0,80)}...</div>
           </div>)}</>}
@@ -485,13 +532,32 @@ export default function PhillyHub(){
         <div style={S.ir}>📍 {cm.addr}</div>
         <div style={S.ir}>🕐 {cm.hours}</div>
       </>})()}
-      {dtl.tp==="tour"&&(()=>{const tour=dtl.d;return<>
-        <div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}><div style={{flex:1}}><div style={S.tt}>👑 {tour.name}</div><div style={{display:"flex",gap:6}}><span style={S.bg(P.gold)}>{tour.stops.length} stops</span><span style={{fontSize:11,color:P.textMut}}>{tour.dur}</span></div></div><div style={S.cb} onClick={()=>setDtl(null)}>✕</div></div>
-        <div style={{height:2,background:P.gradG,borderRadius:1,opacity:0.6}}/><p style={{fontSize:13,lineHeight:1.6,color:P.textSec,margin:"12px 0"}}>{tour.desc}</p>
-        {tour.stops.map((sid,i)=>{const spot=LM.find(l=>l.id===sid)||FOOD_FREE.find(f=>f.id===sid);return spot?<div key={sid} style={{display:"flex",gap:8,padding:"6px 0",borderBottom:i<tour.stops.length-1?`1px solid ${P.bdr}`:"none"}}>
-          <div style={{width:22,height:22,borderRadius:11,background:`${P.gold}15`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,color:P.gold,flexShrink:0}}>{i+1}</div>
-          <div><div style={{fontSize:13}}>{spot.name}</div>{spot.addr&&<div style={{fontSize:10,color:P.textMut}}>{spot.addr}</div>}</div>
+      {dtl.tp==="tour"&&(()=>{const tour=dtl.d;const stopData=tour.stops.map(s=>{const spot=LM.find(l=>l.id===s.sid)||FOOD_FREE.find(f=>f.id===s.sid);return{...s,spot}});return<>
+        <div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}><div style={{flex:1}}><div style={S.tt}>👑 {tour.name}</div><div style={{display:"flex",gap:6,flexWrap:"wrap"}}><span style={S.bg(P.gold)}>{tour.stops.length} stops</span><span style={{fontSize:11,color:P.textMut}}>{tour.dur}</span><span style={{fontSize:11,color:P.textMut}}>· {tour.dist}</span></div></div><div style={S.cb} onClick={()=>setDtl(null)}>✕</div></div>
+        <div style={{display:"flex",gap:4,flexWrap:"wrap",marginBottom:10}}>{tour.tags.map(tag=><span key={tag} style={{fontSize:10,padding:"3px 8px",borderRadius:12,background:`${P.sky}12`,color:P.sky,fontWeight:500}}>{tag}</span>)}</div>
+        <div style={{height:2,background:P.gradG,borderRadius:1,opacity:0.6}}/>
+        <p style={{fontSize:13,lineHeight:1.6,color:P.textSec,margin:"12px 0"}}>{tour.desc}</p>
+        <div style={{...S.ir,background:`${P.sky}08`,border:`1px solid ${P.sky}20`}}>🧭 <span style={{fontSize:12,color:P.sky}}>{tour.direction}</span></div>
+        <div style={{...S.ir,background:`${P.gold}08`,border:`1px solid ${P.gold}20`}}>⏰ <span style={{fontSize:12,color:P.gold}}>{tour.bestTime}</span></div>
+        <div style={{...S.ir,background:`${P.green}08`,border:`1px solid ${P.green}20`}}>💡 <span style={{fontSize:12,color:P.green}}>{tour.tip}</span></div>
+        <div style={{fontSize:13,fontWeight:600,margin:"14px 0 8px"}}>Route ({tour.stops.length} stops)</div>
+        {stopData.map((s,i)=>{const spot=s.spot;const nextSpot=i<stopData.length-1?stopData[i+1].spot:null;const legDist=nextSpot&&spot?dKm(spot.lat,spot.lng,nextSpot.lat,nextSpot.lng):0;return spot?<div key={s.sid}>
+          <div style={{display:"flex",gap:10,padding:"8px 0"}}>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0}}>
+              <div style={{width:26,height:26,borderRadius:13,background:`${P.gold}15`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:P.gold}}>{i+1}</div>
+              {i<stopData.length-1&&<div style={{width:2,flex:1,background:`${P.gold}20`,marginTop:4}}/>}
+            </div>
+            <div style={{flex:1,paddingBottom:8}}>
+              <div style={{fontSize:14,fontWeight:600}}>{spot.name}</div>
+              {spot.addr&&<div style={{fontSize:10,color:P.textMut,marginTop:1}}>📍 {spot.addr}</div>}
+              <div style={{fontSize:12,color:P.textSec,marginTop:4,lineHeight:1.5,fontStyle:"italic"}}>{s.note}</div>
+            </div>
+          </div>
+          {i<stopData.length-1&&legDist>0&&<div style={{display:"flex",alignItems:"center",gap:6,padding:"2px 0 6px 12px",fontSize:10,color:P.textMut}}>
+            <span style={{flex:"0 0 auto"}}>↓</span><span>{dL(legDist)} walk{legDist>3?" (consider transit)":""}</span>
+          </div>}
         </div>:null})}
+        <div style={{marginTop:12,padding:"12px",borderRadius:10,background:P.sky,textAlign:"center",cursor:"pointer",fontWeight:600,fontSize:14,color:"#fff"}} onClick={()=>window.open(`https://www.google.com/maps/dir/?api=1&destination=${tour.startLat},${tour.startLng}&travelmode=walking`,"_blank")}>🗺️ Navigate to Start</div>
       </>})()}
       {dtl.tp==="gem"&&(()=>{const g=dtl.d;return<>
         <div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}><div style={{flex:1}}><div style={S.tt}>💎 {g.name}</div><span style={S.bg(P.gold)}>{t.hiddenGem}</span></div><div style={S.cb} onClick={()=>setDtl(null)}>✕</div></div>
