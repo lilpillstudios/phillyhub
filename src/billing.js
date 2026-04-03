@@ -165,7 +165,12 @@ export function purchaseLocalsGuide() {
  */
 export function restorePurchases() {
   if (!window.CdvPurchase) {
-    checkLocalUnlock();
+    if (isPurchased()) {
+      checkLocalUnlock();
+      alert("Purchases restored successfully!");
+    } else {
+      alert("No previous purchases found.");
+    }
     return;
   }
 
@@ -173,8 +178,15 @@ export function restorePurchases() {
   store.restorePurchases().then(() => {
     console.log("[Billing] Restore complete");
     checkExistingPurchases();
+    const product = store.get(PRODUCT_ID);
+    if (product && product.owned) {
+      alert("Purchases restored successfully!");
+    } else {
+      alert("No previous purchases found.");
+    }
   }).catch((err) => {
     console.error("[Billing] Restore error:", err);
+    alert("Unable to restore purchases. Please check your internet connection and try again.");
   });
 }
 
