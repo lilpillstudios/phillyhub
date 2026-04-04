@@ -84,6 +84,7 @@ workflows:
           /usr/libexec/PlistBuddy -c "Add :NSLocationAlwaysAndWhenInUseUsageDescription string 'PhillyHub uses your location to show distances to landmarks, find nearby restaurants and services, and display your position on the map.'" Info.plist || true
           /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" Info.plist || true
           /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName PhillyHub" Info.plist || /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string PhillyHub" Info.plist || true
+          plutil -replace UIDeviceFamily -json '[1]' Info.plist
       - name: Install CocoaPods
         script: cd ios/App && pod install
       - name: Set deployment target
