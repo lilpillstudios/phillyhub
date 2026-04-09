@@ -1,4 +1,5 @@
 import{useState,useEffect,useCallback,useMemo,useRef}from"react";
+import{useRemoteEvents}from"./useRemoteEvents";
 import{initBilling,purchaseLocalsGuide,restorePurchases}from"./billing";
 import{T as TR,LANGUAGES}from"./translations";
 import{FOOD_FREE,FOOD_PREMIUM}from"./food-data";
@@ -334,6 +335,7 @@ export default function PhillyHub(){
   const ECS=useMemo(()=>mkECS(t),[lang]);
   const SFS=useMemo(()=>mkSFS(t),[lang]);
   const allFood=useMemo(()=>isPro?[...FOOD_FREE,...FOOD_PREMIUM]:FOOD_FREE,[isPro]);
+  const{events:remoteEV}=useRemoteEvents(EV);
 
   useEffect(()=>{try{localStorage.setItem("ph_favs",JSON.stringify([...favs]))}catch{}},[favs]);
   useEffect(()=>{initBilling(setPro)},[]);
@@ -355,7 +357,7 @@ export default function PhillyHub(){
   const fFd=useMemo(()=>{if(cat!=="food")return[];let l=[...allFood];if(srch.trim()){const q=srch.toLowerCase();l=l.filter(x=>x.name.toLowerCase().includes(q)||x.cuisine.includes(q))}if(uLat)l.sort((a,b)=>dKm(uLat,uLng,a.lat,a.lng)-dKm(uLat,uLng,b.lat,b.lng));return l},[cat,srch,uLat,uLng,allFood]);
   const fSv=useMemo(()=>{if(cat!=="services")return[];let l=[...SVC];if(sF!=="all")l=l.filter(x=>x.type===sF);if(uLat)l.sort((a,b)=>dKm(uLat,uLng,a.lat,a.lng)-dKm(uLat,uLng,b.lat,b.lng));return l},[cat,sF,uLat,uLng]);
   const fCm=useMemo(()=>{if(cat!=="community")return[];return COMMUNITY},[cat]);
-  const fEv=useMemo(()=>{let e=EV.filter(x=>x.date>=TODAY);if(eF!=="all")e=e.filter(x=>x.cat===eF);if(srch.trim()){const q=srch.toLowerCase();e=e.filter(x=>x.title.toLowerCase().includes(q))}return e.sort((a,b)=>a.date.localeCompare(b.date))},[eF,srch]);
+  const fEv=useMemo(()=>{let e=remoteEV.filter(x=>x.date>=TODAY);if(eF!=="all")e=e.filter(x=>x.cat===eF);if(srch.trim()){const q=srch.toLowerCase();e=e.filter(x=>x.title.toLowerCase().includes(q))}return e.sort((a,b)=>a.date.localeCompare(b.date))},[eF,srch,remoteEV]);
   const fR=useMemo(()=>tF==="all"?RTS:RTS.filter(r=>r.type===tF),[tF]);
   const shY=sheet==="peek"?420:sheet==="half"?240:0;
   const showT=tab==="transit";
