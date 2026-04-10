@@ -1,14 +1,15 @@
 import{useState,useEffect,useCallback,useMemo,useRef}from"react";
+import{useRemoteEvents}from"./useRemoteEvents";
 import{T as TR,LANGUAGES}from"./translations";
 
-// PhillyHub PWA — Free Tier (Landmarks + Events only)
-// Full app available on Google Play
+// PhillyHub PWA — Free Tier (Landmarks + Events + GPS)
+// Full app available on App Store & Google Play
 // Lil Pill Studios © 2026
 
 const DK={sky:"#89CFF0",coral:"#F09898",yellow:"#F5E87A",green:"#7BD4A0",purple:"#C4A8E0",orange:"#E0A870",red:"#E63946",gold:"#D4AF37",bg:"#0F1117",bgCard:"#161820",bgSheet:"#12141C",bgElev:"#1C1E28",text:"rgba(255,255,255,0.92)",textSec:"rgba(255,255,255,0.55)",textMut:"rgba(255,255,255,0.3)",textHint:"rgba(255,255,255,0.18)",bdr:"rgba(255,255,255,0.06)",grad:"linear-gradient(135deg,#89CFF0,#F09898,#F5E87A)",r:12,rs:8};
 const LT={sky:"#2563EB",coral:"#E11D48",yellow:"#CA8A04",green:"#16A34A",purple:"#7C3AED",orange:"#EA580C",red:"#DC2626",gold:"#B8860B",bg:"#F8F9FA",bgCard:"#FFFFFF",bgSheet:"#FFFFFF",bgElev:"#F0F1F3",text:"rgba(0,0,0,0.87)",textSec:"rgba(0,0,0,0.55)",textMut:"rgba(0,0,0,0.33)",textHint:"rgba(0,0,0,0.12)",bdr:"rgba(0,0,0,0.08)",grad:"linear-gradient(135deg,#2563EB,#E11D48,#CA8A04)",r:12,rs:8};
 
-const PLAY_URL="https://play.google.com/store/apps/details?id=com.lilpillstudios.phillyhub";
+const APPSTORE_URL="https://apps.apple.com/us/app/phillyhub/id6761440105";
 
 const LM=[
 {id:"lb01",name:"Liberty Bell",lat:39.9496,lng:-75.1503,type:"monument",addr:"526 Market St",desc:"Iconic symbol of American independence."},
@@ -28,19 +29,36 @@ const LM=[
 {id:"lb15",name:"Rittenhouse Square",lat:39.9496,lng:-75.1718,type:"park",addr:"210 W Rittenhouse Sq",desc:"Tree-lined paths, fountain, restaurants."},
 {id:"lb16",name:"African American Museum",lat:39.9536,lng:-75.1515,type:"museum",addr:"701 Arch St",desc:"First institution by a major city for African American heritage."},
 {id:"lb17",name:"Franklin's Grave",lat:39.9498,lng:-75.1519,type:"monument",addr:"340 N 5th St",desc:"Christ Church Burial Ground. Toss a penny."},
-{id:"lb18",name:"Lemon Hill (FIFA FanFest)",lat:39.9715,lng:-75.1830,type:"park",addr:"Sedgley Dr",desc:"FIFA FanFest — up to 25K daily."},
+{id:"lb18",name:"Lemon Hill (Fan Festival)",lat:39.9715,lng:-75.1830,type:"park",addr:"Sedgley Dr",desc:"Soccer fan festival — up to 25K daily."},
 {id:"lb19",name:"Sports Complex",lat:39.9060,lng:-75.1680,type:"monument",addr:"3501 S Broad St",desc:"Lincoln Financial Field, Citizens Bank Park."},
 {id:"lb20",name:"FDR Park",lat:39.9005,lng:-75.1760,type:"park",addr:"1500 Pattison Ave",desc:"200 acres near stadiums. Pre-match hangout."},
+// ─── BLACK AMERICAN HISTORY ────────────────────────────────────────
+{id:"lb33",name:"Mother Bethel AME Church",lat:39.9438,lng:-75.1498,type:"church",addr:"419 S 6th St",desc:"Oldest AME congregation in America. Founded by Richard Allen, born enslaved. National Historic Landmark."},
+{id:"lb34",name:"Johnson House Historic Site",lat:40.0340,lng:-75.1710,type:"museum",addr:"6306 Germantown Ave",desc:"Confirmed Underground Railroad station. Germantown Quakers sheltered freedom seekers here."},
+{id:"lb35",name:"Belmont Mansion",lat:39.9780,lng:-75.2020,type:"museum",addr:"2000 Belmont Mansion Dr",desc:"Underground Railroad site in Fairmount Park. Now the American Women's Heritage Museum. Free."},
+{id:"lb36",name:"Octavius V. Catto Memorial",lat:39.9524,lng:-75.1636,type:"monument",addr:"City Hall, S Plaza",desc:"First public statue of a named African American in Philadelphia. Civil rights pioneer."},
+{id:"lb37",name:"President's House",lat:39.9497,lng:-75.1498,type:"monument",addr:"525 Market St",desc:"Where Washington and Adams lived — and where 9 enslaved people served them. Open-air memorial."},
+{id:"lb38",name:"Paul Robeson House",lat:39.9570,lng:-75.1870,type:"museum",addr:"4951 Walnut St",desc:"Home of the athlete, actor, singer, and civil rights activist. National Historic Landmark."},
+{id:"lb39",name:"Colored Girls Museum",lat:39.9600,lng:-75.2050,type:"museum",addr:"4613 Newhall St",desc:"Intimate museum celebrating the stories of ordinary Black women. By appointment."},
+{id:"lb40",name:"Church of the Advocate",lat:39.9780,lng:-75.1620,type:"church",addr:"1801 W Diamond St",desc:"Site of the 1970 Black Panther convention. Murals by Walter Edmonds. Gothic Revival."},
+{id:"lb41",name:"Fair Hill Burial Ground",lat:39.9920,lng:-75.1420,type:"monument",addr:"2901 Germantown Ave",desc:"Resting place of Lucretia Mott and Robert Purvis — abolitionists who shaped the movement."},
+{id:"lb42",name:"Engine Company 11",lat:39.9540,lng:-75.1700,type:"monument",addr:"1226 Ridge Ave",desc:"First Black firehouse in Philadelphia."},
+{id:"lb43",name:"Henry 'Hank' Gathers Recreation Center",lat:39.9750,lng:-75.1560,type:"monument",addr:"2501 W Lehigh Ave",desc:"Named for the North Philly basketball legend. Community center in Strawberry Mansion."},
+// ─── STEPHEN GIRARD LANDMARKS ──────────────────────────────────────
+{id:"lb44",name:"Girard College / Founder's Hall",lat:39.9720,lng:-75.1740,type:"museum",addr:"2101 S College Ave",desc:"Founded by Stephen Girard for orphaned children. Greek Revival masterpiece. Desegregated via Supreme Court in 1968."},
+{id:"lb45",name:"First Bank of the United States",lat:39.9481,lng:-75.1451,type:"monument",addr:"116 S 3rd St",desc:"America's first central bank. Hamilton's vision, Girard saved it."},
+{id:"lb46",name:"Girard Row",lat:39.9435,lng:-75.1570,type:"monument",addr:"326-334 Spruce St",desc:"Row houses built by Girard's estate. Greek Revival. Still standing in Society Hill."},
+{id:"lb47",name:"Bush Hill (Girard's Yellow Fever Hospital)",lat:39.9650,lng:-75.1700,type:"monument",addr:"Near 17th & Spring Garden (site)",desc:"During the 1793 yellow fever epidemic, Girard personally nursed the sick here when everyone else fled."},
 ];
 
 const EV=[
-{id:"ev01",title:"FIFA: Ivory Coast vs Ecuador",date:"2026-06-14",time:"7:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group E opener.",tix:"https://www.fifa.com/tickets"},
-{id:"ev02",title:"FIFA: Brazil vs Haiti",date:"2026-06-19",time:"9:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group C.",tix:"https://www.fifa.com/tickets"},
-{id:"ev03",title:"FIFA: France vs TBD",date:"2026-06-22",time:"5:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group I.",tix:"https://www.fifa.com/tickets"},
-{id:"ev04",title:"FIFA: Curaçao vs Ivory Coast",date:"2026-06-25",time:"4:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group E final matchday.",tix:"https://www.fifa.com/tickets"},
-{id:"ev05",title:"FIFA: Croatia vs Ghana",date:"2026-06-27",time:"5:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group L.",tix:"https://www.fifa.com/tickets"},
-{id:"ev06",title:"FIFA: Round of 16",date:"2026-07-04",time:"5:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Knockout on America's 250th birthday.",tix:"https://www.fifa.com/tickets"},
-{id:"ev07",title:"FIFA FanFest at Lemon Hill",date:"2026-06-11",time:"All Day",venue:"Lemon Hill",addr:"Sedgley Dr",lat:39.9715,lng:-75.1830,cat:"fifa",free:true,desc:"5-week watch party festival."},
+{id:"ev01",title:"Ivory Coast vs Ecuador",date:"2026-06-14",time:"7:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group E opener.",tix:"https://www.fifa.com/tickets"},
+{id:"ev02",title:"Brazil vs Haiti",date:"2026-06-19",time:"9:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group C.",tix:"https://www.fifa.com/tickets"},
+{id:"ev03",title:"France vs Playoff Winner",date:"2026-06-22",time:"5:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group I.",tix:"https://www.fifa.com/tickets"},
+{id:"ev04",title:"Curaçao vs Ivory Coast",date:"2026-06-25",time:"4:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group E final matchday.",tix:"https://www.fifa.com/tickets"},
+{id:"ev05",title:"Croatia vs Ghana",date:"2026-06-27",time:"5:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Group L.",tix:"https://www.fifa.com/tickets"},
+{id:"ev06",title:"Round of 16",date:"2026-07-04",time:"5:00 PM",venue:"Philadelphia Stadium",addr:"1 Lincoln Financial Field Way",lat:39.9060,lng:-75.1680,cat:"fifa",free:false,desc:"Knockout on America's 250th birthday.",tix:"https://www.fifa.com/tickets"},
+{id:"ev07",title:"Soccer Fan Festival at Lemon Hill",date:"2026-06-11",time:"All Day",venue:"Lemon Hill",addr:"Sedgley Dr",lat:39.9715,lng:-75.1830,cat:"fifa",free:true,desc:"5-week watch party festival."},
 {id:"ev08",title:"52 Weeks of Firsts",date:"2026-01-01",time:"Weekly",venue:"Citywide",addr:"Various",lat:39.9524,lng:-75.1636,cat:"america250",free:true,desc:"Free weekly events honoring Philly firsts."},
 {id:"ev09",title:"Wawa Welcome America",date:"2026-06-19",time:"All Day",venue:"Benjamin Franklin Pkwy",addr:"Benjamin Franklin Parkway",lat:39.9630,lng:-75.1750,cat:"america250",free:true,desc:"16 days, 6 nights fireworks, July 3 parade."},
 {id:"ev10",title:"July 4th Fireworks & Concert",date:"2026-07-04",time:"8:00 PM",venue:"Art Museum / Parkway",addr:"2600 Benjamin Franklin Pkwy",lat:39.9656,lng:-75.1810,cat:"fireworks",free:true,desc:"Nation's biggest July 4th event."},
@@ -52,7 +70,7 @@ const EV=[
 
 function pC(t){return{monument:"#F09898",museum:"#F5E87A",park:"#7BD4A0",church:"#C4A8E0"}[t]||"#89CFF0"}
 function eC(c){return{fifa:"#E63946",america250:"#3B82F6",fireworks:"#F59E0B",concert:"#8B5CF6",festival:"#10B981",parade:"#EC4899"}[c]||"#89CFF0"}
-function eL(c){return{fifa:"FIFA",america250:"250th",fireworks:"July 4th",concert:"Sports",festival:"Arts",parade:"Parade"}[c]||c}
+function eL(c){return{fifa:"Soccer 2026",america250:"250th",fireworks:"July 4th",concert:"Sports",festival:"Arts",parade:"Parade"}[c]||c}
 function fD(d){const dt=new Date(d+"T12:00:00");return dt.toLocaleDateString("en-US",{month:"short",day:"numeric"})}
 const TODAY=new Date().toISOString().slice(0,10);
 
@@ -79,10 +97,13 @@ const mkS=P=>({
 
 // Upsell banner component
 function Upsell({P,msg}){
-  return<div onClick={()=>window.open(PLAY_URL,"_blank")} style={{background:`${P.sky}08`,border:`1px solid ${P.sky}25`,borderRadius:P.r,padding:"14px 16px",marginBottom:12,cursor:"pointer",textAlign:"center"}}>
+  return<div style={{background:`${P.sky}08`,border:`1px solid ${P.sky}25`,borderRadius:P.r,padding:"14px 16px",marginBottom:12,cursor:"pointer",textAlign:"center"}}>
     <div style={{fontSize:14,fontWeight:600,color:P.sky,marginBottom:4}}>📱 {msg||"Get the full app"}</div>
     <div style={{fontSize:11,color:P.textSec}}>Transit, 80+ restaurants, services, walking tours & more</div>
-    <div style={{marginTop:8,padding:"8px 20px",borderRadius:20,background:P.sky,color:"#fff",fontSize:13,fontWeight:600,display:"inline-block"}}>Download on Google Play</div>
+    <div style={{display:"flex",gap:8,justifyContent:"center",marginTop:10,flexWrap:"wrap"}}>
+      <div onClick={()=>window.open(APPSTORE_URL,"_blank")} style={{padding:"8px 16px",borderRadius:20,background:P.sky,color:"#fff",fontSize:12,fontWeight:600}}>Download on App Store</div>
+      <div style={{padding:"8px 16px",borderRadius:20,background:P.bgElev,color:P.textSec,fontSize:12,fontWeight:500,border:`1px solid ${P.bdr}`}}>Android Coming Soon</div>
+    </div>
   </div>
 }
 
@@ -104,7 +125,7 @@ function MapV({pins,selId,onPin,P}){
   </div>;
 }
 
-// Onboarding (language + 2 feature steps, no transit step)
+// Onboarding
 function Onboarding({onDone,lang,onLang,P}){
   const[step,setStep]=useState(0);const t=TR[lang]||TR.en;
   if(step===0)return<div style={{position:"absolute",inset:0,zIndex:50,background:P.bg,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"40px 24px",animation:"fi 0.4s ease"}}>
@@ -144,6 +165,7 @@ export default function PhillyHubPWA(){
 
   const P=dark?DK:LT;const S=useMemo(()=>mkS(P),[dark]);
   const t=TR[lang]||TR.en;
+  const{events:remoteEV}=useRemoteEvents(EV);
 
   useEffect(()=>{try{localStorage.setItem("ph_lang",lang)}catch{}},[lang]);
   useEffect(()=>{try{localStorage.setItem("ph_dark",dark?"1":"0")}catch{}},[dark]);
@@ -155,7 +177,7 @@ export default function PhillyHubPWA(){
   const onShTE=()=>{dragRef.current=null};
 
   const fLm=useMemo(()=>{let l=[...LM];if(srch.trim()){const q=srch.toLowerCase();l=l.filter(x=>x.name.toLowerCase().includes(q)||x.desc.toLowerCase().includes(q))}return l},[srch]);
-  const fEv=useMemo(()=>{let e=EV.filter(x=>x.date>=TODAY);if(eF!=="all")e=e.filter(x=>x.cat===eF);if(srch.trim()){const q=srch.toLowerCase();e=e.filter(x=>x.title.toLowerCase().includes(q))}return e.sort((a,b)=>a.date.localeCompare(b.date))},[eF,srch]);
+  const fEv=useMemo(()=>{let e=remoteEV.filter(x=>x.date>=TODAY);if(eF!=="all")e=e.filter(x=>x.cat===eF);if(srch.trim()){const q=srch.toLowerCase();e=e.filter(x=>x.title.toLowerCase().includes(q))}return e.sort((a,b)=>a.date.localeCompare(b.date))},[eF,srch,remoteEV]);
   const shY=sheet==="peek"?420:sheet==="half"?240:0;
   const mapPins=useMemo(()=>{if(tab==="events")return fEv.map(e=>({id:e.id,name:e.title,lat:e.lat,lng:e.lng,pc:eC(e.cat)}));return fLm.map(l=>({...l,pc:pC(l.type)}))},[tab,fLm,fEv]);
 
@@ -222,7 +244,7 @@ export default function PhillyHubPWA(){
         </div>})}</div>
       </>}
 
-      {/* TRANSIT — locked, upsell */}
+      {/* TRANSIT — locked */}
       {tab==="transit"&&<div style={S.lst}>
         <div style={{textAlign:"center",padding:"40px 20px"}}>
           <div style={{fontSize:40,marginBottom:12}}>🚊</div>
@@ -232,7 +254,7 @@ export default function PhillyHubPWA(){
         </div>
       </div>}
 
-      {/* FOOD — locked, upsell */}
+      {/* FOOD — locked */}
       {tab==="food"&&<div style={S.lst}>
         <div style={{textAlign:"center",padding:"40px 20px"}}>
           <div style={{fontSize:40,marginBottom:12}}>🍴</div>
@@ -263,9 +285,9 @@ export default function PhillyHubPWA(){
     {/* Nav */}
     <div style={S.nv}>{NAV.map(n=><div key={n.id} style={S.ni(tab===n.id)} onClick={()=>{if(tab===n.id){setSh(prev=>prev==="peek"?"half":prev==="half"?"full":"half")}else{setTab(n.id);setSrch("");setSh("half")}}}><span style={{fontSize:18}}>{n.icon}</span><span style={{fontSize:10,fontWeight:500}}>{n.l}</span>{tab===n.id&&<div style={{position:"absolute",top:0,width:18,height:2,borderRadius:1,background:P.sky}}/>}</div>)}</div>
 
-    {/* Persistent bottom banner */}
-    <div onClick={()=>window.open(PLAY_URL,"_blank")} style={{position:"absolute",bottom:56,left:0,right:0,zIndex:22,padding:"6px 14px",background:`${P.sky}12`,borderTop:`1px solid ${P.sky}20`,display:"flex",justifyContent:"center",alignItems:"center",gap:8,cursor:"pointer"}}>
-      <span style={{fontSize:11,color:P.sky,fontWeight:600}}>📱 Get the full PhillyHub app on Google Play</span>
+    {/* Persistent bottom banner — App Store */}
+    <div onClick={()=>window.open(APPSTORE_URL,"_blank")} style={{position:"absolute",bottom:56,left:0,right:0,zIndex:22,padding:"6px 14px",background:`${P.sky}12`,borderTop:`1px solid ${P.sky}20`,display:"flex",justifyContent:"center",alignItems:"center",gap:8,cursor:"pointer"}}>
+      <span style={{fontSize:11,color:P.sky,fontWeight:600}}>📱 Get the full PhillyHub app — App Store now · Android coming soon</span>
     </div>
   </div>;
 }
