@@ -335,7 +335,7 @@ export default function PhillyHub(){
   const ECS=useMemo(()=>mkECS(t),[lang]);
   const SFS=useMemo(()=>mkSFS(t),[lang]);
   const allFood=useMemo(()=>isPro?[...FOOD_FREE,...FOOD_PREMIUM]:FOOD_FREE,[isPro]);
- const{events:remoteEV,source:evSource,error:evError}=useRemoteEvents(EV);
+ const{events:remoteEV}=useRemoteEvents(EV);
 
   useEffect(()=>{try{localStorage.setItem("ph_favs",JSON.stringify([...favs]))}catch{}},[favs]);
   useEffect(()=>{initBilling(setPro)},[]);
