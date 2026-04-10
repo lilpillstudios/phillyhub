@@ -88,7 +88,7 @@ workflows:
       - name: Set version
         script: |
           cd ios/App/App
-          plutil -replace CFBundleShortVersionString -string "1.1" Info.plist
+          plutil -replace CFBundleShortVersionString -string "1.2" Info.plist
       - name: Install CocoaPods
         script: cd ios/App && pod install
       - name: Set deployment target
