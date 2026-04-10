@@ -198,7 +198,7 @@ const mkS=P=>({
   dc:{width:"100%",maxWidth:480,background:P.bgSheet,borderRadius:"24px 24px 0 0",padding:"20px 20px 40px",animation:"su 0.3s ease",maxHeight:"85dvh",overflowY:"auto"},
   cb:{width:34,height:34,borderRadius:17,border:`1px solid ${P.bdr}`,background:P.bgElev,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0},
   ir:{display:"flex",alignItems:"center",gap:8,padding:"10px 12px",background:P.bgElev,borderRadius:P.rs,marginBottom:6},
-  nv:{position:"absolute",bottom:0,left:0,right:0,zIndex:25,background:P===DK?"rgba(15,17,23,0.92)":"rgba(255,255,255,0.95)",backdropFilter:"blur(20px)",borderTop:`1px solid ${P.bdr}`,display:"flex",justifyContent:"space-around",alignItems:"center",paddingTop:10,paddingBottom:"calc(env(safe-area-inset-bottom, 8px) + 4px)",minHeight:64},
+  nv:{position:"absolute",bottom:0,left:0,right:0,zIndex:30,background:P===DK?"rgba(15,17,23,0.92)":"rgba(255,255,255,0.95)",backdropFilter:"blur(20px)",borderTop:`1px solid ${P.bdr}`,display:"flex",justifyContent:"space-around",alignItems:"center",paddingTop:10,paddingBottom:"calc(env(safe-area-inset-bottom, 8px) + 4px)",minHeight:64},
   ni:a=>({display:"flex",flexDirection:"column",alignItems:"center",gap:2,cursor:"pointer",padding:"4px 16px",color:a?P.sky:P.textMut,position:"relative"}),
   cps:{display:"flex",gap:6,padding:"12px 14px 6px",overflowX:"auto",scrollbarWidth:"none"},
   lst:{padding:"0 14px 100px",overflowY:"auto",maxHeight:"calc(70dvh - 110px)",scrollbarWidth:"none"},
