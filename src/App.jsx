@@ -335,7 +335,7 @@ export default function PhillyHub(){
   const ECS=useMemo(()=>mkECS(t),[lang]);
   const SFS=useMemo(()=>mkSFS(t),[lang]);
   const allFood=useMemo(()=>isPro?[...FOOD_FREE,...FOOD_PREMIUM]:FOOD_FREE,[isPro]);
- const{events:remoteEV}=useRemoteEvents(EV);
+  const{events:remoteEV}=useRemoteEvents(EV);
 
   useEffect(()=>{try{localStorage.setItem("ph_favs",JSON.stringify([...favs]))}catch{}},[favs]);
   useEffect(()=>{initBilling(setPro)},[]);
@@ -457,7 +457,7 @@ export default function PhillyHub(){
       {/* EVENTS */}
       {tab==="events"&&<>
         <div style={S.cps}>{ECS.map(ec=><div key={ec.id} style={S.ch(eF===ec.id,eC(ec.id)||P.sky)} onClick={()=>{setEF(ec.id);haptic()}}>{ec.l}</div>)}</div>
-       <div style={S.cnt}>{fEv.length} {fEv.length===1?t.event_count:t.events_count} · {evSource}{evError?" · "+evError:""}</div>
+        <div style={S.cnt}>{fEv.length} {fEv.length===1?t.event_count:t.events_count}</div>
         <div style={S.lst}>{fEv.map((ev,i)=>{const c=eC(ev.cat);return<div key={ev.id} style={S.cd(i*0.04)} onClick={()=>openD("ev",ev)}>
           <div style={{display:"flex",gap:10}}><div style={{width:42,minHeight:42,borderRadius:8,background:`${c}12`,border:`1px solid ${c}25`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",flexShrink:0}}>
             <span style={{fontSize:9,fontWeight:700,color:c,fontFamily:"monospace"}}>{fD(ev.date).split(" ")[0]}</span><span style={{fontSize:15,fontWeight:700,color:c,lineHeight:1}}>{fD(ev.date).split(" ")[1]}</span></div>
