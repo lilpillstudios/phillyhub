@@ -190,7 +190,7 @@ const haptic=()=>{try{navigator?.vibrate?.(10)}catch{}};
 const mkS=P=>({
   app:{position:"relative",width:"100%",maxWidth:480,margin:"0 auto",height:"100dvh",overflow:"hidden",background:P.bg,fontFamily:"system-ui,-apple-system,sans-serif",color:P.text,WebkitFontSmoothing:"antialiased"},
   sI:{width:"100%",height:42,padding:"0 40px 0 14px",background:P===DK?"rgba(15,17,23,0.88)":"rgba(255,255,255,0.92)",backdropFilter:"blur(20px)",border:`1px solid ${P.bdr}`,borderRadius:21,color:P.text,fontSize:14,outline:"none"},
-  sh:ty=>({position:"absolute",bottom:64,left:0,right:0,zIndex:20,background:P.bgSheet,borderRadius:"24px 24px 0 0",transition:"transform 0.35s cubic-bezier(0.32,0.72,0,1)",transform:`translateY(${ty}px)`,boxShadow:"0 -8px 40px rgba(0,0,0,0.3)",touchAction:"none"}),
+  sh:ty=>({position:"absolute",bottom:0,left:0,right:0,zIndex:20,background:P.bgSheet,borderRadius:"24px 24px 0 0",transition:"transform 0.35s cubic-bezier(0.32,0.72,0,1)",transform:`translateY(${ty}px)`,boxShadow:"0 -8px 40px rgba(0,0,0,0.3)",touchAction:"none"}),
   ch:(a,c)=>({display:"inline-flex",alignItems:"center",gap:5,padding:"7px 12px",borderRadius:20,cursor:"pointer",background:a?`${c}18`:"transparent",border:`1px solid ${a?`${c}40`:P.bdr}`,color:a?c:P.textSec,fontSize:12,fontWeight:500,whiteSpace:"nowrap",flexShrink:0}),
   cd:d=>({background:P.bgCard,borderRadius:P.r,padding:"12px 14px",marginBottom:8,cursor:"pointer",border:`1px solid ${P.bdr}`,animation:`fsu 0.3s ease ${d}s both`}),
   bg:c=>({display:"inline-flex",padding:"2px 7px",borderRadius:5,fontSize:10,fontWeight:600,background:`${c}18`,color:c,letterSpacing:0.3}),
