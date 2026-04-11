@@ -571,6 +571,6 @@ export default function PhillyHub(){
     </div></div>}
 
     {/* Nav */}
-    <div style={S.nv}>{NAV.map(n=><div key={n.id} style={S.ni(tab===n.id)} onClick={()=>{if(tab===n.id){setSh(prev=>prev==="peek"?"half":prev==="half"?"full":"half")}else{setTab(n.id);setSrch("");setSh("half");if(n.id==="explore")setCat("all")}haptic()}}><span style={{fontSize:18}}>{n.icon}</span><span style={{fontSize:10,fontWeight:500}}>{n.l}</span>{tab===n.id&&<div style={{position:"absolute",top:0,width:18,height:2,borderRadius:1,background:P.sky}}/>}</div>)}</div>
+   <div style={S.nv}>{NAV.map(n=>{const go=()=>{if(tab===n.id){setSh(prev=>prev==="peek"?"half":prev==="half"?"full":"half")}else{setTab(n.id);setSrch("");setSh("half");if(n.id==="explore")setCat("all")}haptic()};return<div key={n.id} style={S.ni(tab===n.id)} onTouchEnd={e=>{e.preventDefault();go()}} onClick={go}><span style={{fontSize:18}}>{n.icon}</span><span style={{fontSize:10,fontWeight:500}}>{n.l}</span>{tab===n.id&&<div style={{position:"absolute",top:0,width:18,height:2,borderRadius:1,background:P.sky}}/>}</div>})}</div>
   </div>;
 }
